@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "InputActionValue.h"
+#include "AbilitySystemComponent.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
@@ -24,6 +25,9 @@ public:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ability System")
+	UAbilitySystemComponent* AbilitySystemComponent;
 
 protected:
 	// Called when the game starts or when spawned

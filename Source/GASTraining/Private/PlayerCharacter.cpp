@@ -8,30 +8,34 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include "WalkAbility.h" // Ensure the header file for UWalkAbility is included
+
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+   // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+   PrimaryActorTick.bCanEverTick = true;
 
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+   bUseControllerRotationPitch = false;
+   bUseControllerRotationYaw = false;
+   bUseControllerRotationRoll = false;
 
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
+   GetCharacterMovement()->bOrientRotationToMovement = true;
+   GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 
-	// Create a camera boom (pulls in towards the player if there is a collision)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f;
-	CameraBoom->bUsePawnControlRotation = true;
+   // Create a camera boom (pulls in towards the player if there is a collision)
+   CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+   CameraBoom->SetupAttachment(RootComponent);
+   CameraBoom->TargetArmLength = 400.0f;
+   CameraBoom->bUsePawnControlRotation = true;
 
-	// Create a follow camera
-	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	FollowCamera->bUsePawnControlRotation = false;
+   // Create a follow camera
+   FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+   FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+   FollowCamera->bUsePawnControlRotation = false;
 
+   AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+   AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(UWalkAbility::StaticClass(), 1, 0, this));
 }
 
 // Called when the game starts or when spawned
