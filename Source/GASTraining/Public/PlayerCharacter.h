@@ -10,6 +10,16 @@
 #include "AbilitySystemComponent.h"
 #include "PlayerCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EPlayerAbilityInputID : uint8
+{
+	None,
+	Confirm,
+	Cancel,
+	Move,
+	Attack
+};
+
 UCLASS()
 class GASTRAINING_API APlayerCharacter : public ACharacter
 {
@@ -45,6 +55,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	UInputAction* MoveAction;
 
 	/** Handles move inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category = "Input")

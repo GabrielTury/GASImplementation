@@ -14,4 +14,6 @@ class GASTRAINING_API UWalkAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 	
+public:
+	UWalkAbility();
 };

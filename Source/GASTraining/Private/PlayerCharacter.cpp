@@ -33,9 +33,13 @@ APlayerCharacter::APlayerCharacter()
    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
    FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
    FollowCamera->bUsePawnControlRotation = false;
-
+   
+   //GAS SETUP
    AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-   AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(UWalkAbility::StaticClass(), 1, 0, this));
+   FGameplayAbilitySpec WalkSpec(UWalkAbility::StaticClass());
+   WalkSpec.InputID = static_cast<int32>(EPlayerAbilityInputID::Move); // Set the input ID for the ability
+
+   AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(WalkSpec));
 }
 
 // Called when the game starts or when spawned
@@ -47,6 +51,10 @@ void APlayerCharacter::BeginPlay()
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
+	if(AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(EPlayerAbilityInputID::Move));
+	}
 }
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
@@ -65,6 +73,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		// Bind movement input
+		EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+	}
+
+	FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/GASTraining"), FName("EPlayerAbilityInputID"));
+	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbilityInputBinds(FString("IA_Move"), AbilityEnumAssetPath, static_cast<int32>(EPlayerAbilityInputID::Move)));
 }
 
 void APlayerCharacter::DoMove(float Right, float Forward)

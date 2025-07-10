@@ -3,3 +3,7 @@
 
 #include "WalkAbility.h"
 
+UWalkAbility::UWalkAbility()
+{
+	AbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Player.Walk")));	
+}
