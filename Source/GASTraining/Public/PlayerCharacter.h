@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "InputActionValue.h"
 #include "AbilitySystemComponent.h"
+#include "InputAction.h"
 #include "PlayerCharacter.generated.h"
 
 UENUM(BlueprintType)

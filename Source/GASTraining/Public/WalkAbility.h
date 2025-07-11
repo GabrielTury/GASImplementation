@@ -16,4 +16,11 @@ class GASTRAINING_API UWalkAbility : public UGameplayAbility
 	
 public:
 	UWalkAbility();
+
+	virtual void ActivateAbility(
+		const FGameplayAbilitySpecHandle Handle,
+		const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo,
+		const FGameplayEventData* TriggerEventData) override;
+
 };

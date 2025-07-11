@@ -53,8 +53,8 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 {
 	if(AbilitySystemComponent)
 	{
-		AbilitySystemComponent->AbilityLocalInputPressed(static_cast<int32>(EPlayerAbilityInputID::Move));
-	}
+		AbilitySystemComponent->TryActivateAbilityByClass(UWalkAbility::StaticClass());
+	}	
 }
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
@@ -79,8 +79,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 	}
 
-	FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/GASTraining"), FName("EPlayerAbilityInputID"));
-	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbilityInputBinds(FString("IA_Move"), AbilityEnumAssetPath, static_cast<int32>(EPlayerAbilityInputID::Move)));
+	//This code is deprecated (works with old Unreal input):
+	//FTopLevelAssetPath AbilityEnumAssetPath = FTopLevelAssetPath(FName("/Script/GASTraining"), FName("EPlayerAbilityInputID"));
+	//AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbilityInputBinds(FString("IA_Move"), AbilityEnumAssetPath, static_cast<int32>(EPlayerAbilityInputID::Move)));
 }
 
 void APlayerCharacter::DoMove(float Right, float Forward)

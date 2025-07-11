@@ -18,7 +18,9 @@ public class GASTraining : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"UMG",
-			"GameplayAbilities"
+			"GameplayAbilities",
+            "GameplayTags",
+            "EnhancedInput"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
