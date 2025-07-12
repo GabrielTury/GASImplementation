@@ -40,12 +40,21 @@ APlayerCharacter::APlayerCharacter()
    WalkSpec.InputID = static_cast<int32>(EPlayerAbilityInputID::Move); // Set the input ID for the ability
 
    AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(WalkSpec));
+
+   PlayerAttributes = CreateDefaultSubobject<UPlayerAttributes>(TEXT("PlayerAttributes"));
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (AbilitySystemComponent)
+	{
+		// Bind the OnAdditionalMoveSpeedChanged function to the AdditionalMoveSpeed attribute change
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(PlayerAttributes->GetAdditionalMoveSpeedAttribute())
+			.AddUObject(this, &APlayerCharacter::OnAdditionalMoveSpeedChanged);
+	}
 	
 }
 
@@ -59,6 +68,11 @@ void APlayerCharacter::Move(const FInputActionValue& Value)
 
 void APlayerCharacter::Look(const FInputActionValue& Value)
 {
+}
+
+void APlayerCharacter::OnAdditionalMoveSpeedChanged(const FOnAttributeChangeData& Data)
+{
+	GetCharacterMovement()->MaxWalkSpeed = Data.NewValue;
 }
 
 // Called every frame

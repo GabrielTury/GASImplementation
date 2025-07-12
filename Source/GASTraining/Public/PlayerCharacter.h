@@ -9,6 +9,7 @@
 #include "InputActionValue.h"
 #include "AbilitySystemComponent.h"
 #include "InputAction.h"
+#include "PlayerAttributes.h"
 #include "PlayerCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -41,6 +42,11 @@ public:
 	UAbilitySystemComponent* AbilitySystemComponent;
 
 protected:
+
+	UPROPERTY()
+	UPlayerAttributes* PlayerAttributes;
+
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -49,6 +55,8 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	virtual void OnAdditionalMoveSpeedChanged(const FOnAttributeChangeData& Data);
 
 public:	
 	// Called every frame
